@@ -255,7 +255,7 @@ li{
 .main_content .main_content_iner {
     min-height: 68vh;
     transition: .5s;
-    margin: 30px;
+    margin: 9px;
 }
 
 /* css for logout design */
@@ -292,4 +292,286 @@ li{
 .single-form{
     margin-left: 25px;
     margin-right: 25px;
+    margin-bottom: 57px;
+}
+
+.page-pointer{
+    cursor: pointer;
+}
+
+.download{
+    cursor: pointer;
+    padding-right: 25px;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    border: none;
+}
+
+table{
+    table-layout: fixed;
+    width: 100%;
+}
+
+/* add animal css */
+
+#reveal-if-cat, #reveal-if-dog{
+    display: none;
+}
+#catradio:checked ~ #reveal-if-cat{
+    display: block;
+}
+#dogradio:checked ~ #reveal-if-dog{
+    display: block;
+}
+
+input[type=radio]:after {
+    width: 15px;
+    height: 15px;
+    top: -2px;
+    left: -1px;
+    position: relative;
+    content: '';
+    display: inline-block;
+    visibility: visible;
+}
+
+.statyes input[type=radio]:checked:after {
+    width: 15px;
+    height: 15px;
+    border-radius: 15px;
+    top: -2px;
+    left: -1px;
+    position: relative;
+    background-color: green;
+    content: '';
+    display: inline-block;
+    visibility: visible;
+    border: 2px solid white;
+}
+
+.statno input[type=radio]:checked:after {
+    width: 15px;
+    height: 15px;
+    border-radius: 15px;
+    top: -2px;
+    left: -1px;
+    position: relative;
+    background-color: red;
+    content: '';
+    display: inline-block;
+    visibility: visible;
+    border: 2px solid white;
+}
+
+
+.more-information{
+    display: flex;
+    justify-content: space-between;
+}
+
+.more-information-content{
+    font-weight: bold;
+    text-decoration: none;
+    -webkit-text-fill-color: #000;
+}
+
+.clr{
+    background-color: aliceblue;
+}
+
+.statlow input[type=radio]:checked:after {
+    width: 15px;
+    height: 15px;
+    border-radius: 15px;
+    top: -2px;
+    left: -1px;
+    position: relative;
+    background-color: limegreen;
+    content: '';
+    display: inline-block;
+    visibility: visible;
+    border: 2px solid white;
+}
+
+.statmed input[type=radio]:checked:after {
+    width: 15px;
+    height: 15px;
+    border-radius: 15px;
+    top: -2px;
+    left: -1px;
+    position: relative;
+    background-color: orange;
+    content: '';
+    display: inline-block;
+    visibility: visible;
+    border: 2px solid white;
+}
+
+.stathigh input[type=radio]:checked:after {
+    width: 15px;
+    height: 15px;
+    border-radius: 15px;
+    top: -2px;
+    left: -1px;
+    position: relative;
+    background-color: red;
+    content: '';
+    display: inline-block;
+    visibility: visible;
+    border: 2px solid white;
+}
+.row-fix{
+    padding: 5px 25px;
+}
+
+.count-animal1{
+    padding: 15px 15px;
+    background-color: #3b76ef;
+}
+
+.count-animal2{
+    padding: 15px 15px;
+    background-color: #63c7ff;
+}
+.count-animal2:hover{
+    background-color: #3b76ef;
+}
+
+.count-animal3{
+    padding: 15px 15px;
+    background-color:   #b98edb;
+}
+.count-animal3:hover{
+    background-color: #3b76ef;
+}
+
+.count-animals1{
+    padding: 15px 15px;
+    background-color: #2dc657;
+}
+
+.count-animals2{
+    padding: 15px 15px;
+    background-color: #cb72c1;
+}
+
+.count-animals3{
+    padding: 15px 15px;
+    background-color: #2cd5ab;
+}
+
+.count-animals4{
+    padding: 15px 15px;
+    background-color: #c3c02f;
+}
+
+.incard{
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+
+.ribbon {
+    /* width: 48%; */
+    height: 50px;
+    position: relative;
+    float: left;
+    margin-bottom: 30px;
+    background-size: cover;
+    text-transform: uppercase;
+    color: white;
+}
+
+@media (max-width: 500px) {
+    .ribbon {
+        width: 100%;
+    }
+    .ribbon:nth-child(even) {
+        margin-right: 0%;
+    }
+}
+
+.ribbon3 {
+    /* width: 150px; */
+    height: 50px;
+    line-height: 50px;
+    padding-left: 15px;
+    position: absolute;
+    left: -8px;
+    top: 20px;
+    background: #59324C;
+}
+.ribbon3:before, .ribbon3:after {
+    content: "";
+    position: absolute;
+}
+.ribbon3:before {
+    height: 0;
+    width: 0;
+    top: -8.5px;
+    left: 0.1px;
+    border-bottom: 9px solid black;
+    border-left: 9px solid transparent;
+}
+.ribbon3:after {
+    height: 0;
+    width: 0;
+    right: -14.5px;
+    border-top: 25px solid transparent;
+    border-bottom: 25px solid transparent;
+    border-left: 15px solid #59324C;
+}
+
+.chart{
+    width: 400px;
+}
+
+.filter{
+    display: flex;
+    justify-content: space-between;
+}
+
+.additems{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-direction: column;
+}
+
+/* pagination buttons css */
+
+.paginationBttns{
+    width: 80%;
+    height: 40px;
+    list-style: none;
+    display: flex;
+    justify-content: center;
+}
+
+.paginationBttns a{
+    padding: 10px;
+    margin: 8px;
+    border-radius: 5px;
+    border: 1px solid #0d6efd;
+    color: #0d6efd;
+    cursor: pointer;
+}
+
+.paginationBttns a:hover{
+    color: white;
+    background-color: #0d6efd;
+}
+
+.paginationActive a{
+    color: white;
+    background-color: #0d6efd;
+}
+
+.previousBttn{
+    text-decoration: none;
+}
+.nextBttn{
+    text-decoration: none;
 }

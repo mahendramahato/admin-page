@@ -1,36 +1,45 @@
-import {React, useState, useEffect, useRef} from 'react'
-import { Link, useParams } from 'react-router-dom'
-import AdminAPI from '../services/AdminAPI'
-import ReactToPrint, { useReactToPrint } from 'react-to-print'
 
-export const MoreInfo = () => {
+import React, { useState, useEffect } from 'react'
+import {Link, useNavigate, useParams} from 'react-router-dom'
+import AdminAPI from '../services/AdminAPI'
+
+export const UpdateForm = () => {
 
     const [openNav, setOpenNav] = useState(false)
     const showSidebar = () => setOpenNav(!openNav)
 
-    const [client, setClient] = useState([])
+    const [firstName, setFirstName] = useState('')
+    const [lastName, setLastName] = useState('')
+    const [email, setEmail] = useState('')
+    const [cellPhone, setCellphone] = useState('')
+
+    const navigate = useNavigate();
     const {formId} = useParams();
+
+    const Update = (e) => {
+        e.preventDefault();
+
+        const client = {firstName, lastName, email, cellPhone}
+        AdminAPI.updateForm(formId, client).then((response) =>{
+            navigate('/form_list')
+        }).catch(error =>{
+            console.log(error)
+        })
+    }
 
     useEffect(() => {
         AdminAPI.getClientById(formId).then((response) =>{
-            setClient(response.data)
-        }).catch(error=>{
+            setFirstName(response.data.firstName)
+            setLastName(response.data.lastName)
+            setEmail(response.data.email)
+            setCellphone(response.data.cellPhone)
+        }).catch(error => {
             console.log(error)
         })
     }, [])
-
-    // create download the pdf page code
-    const componentRef = useRef()
-    const print = useReactToPrint({
-        content: () => componentRef.current,
-    })
-
-    // converting array of items into comma separated strings
-    const arr = client.animal_interest
-    const str = String(arr)
+    
 
     return (
-        
 
         <div className="container-fluid">
 
@@ -158,84 +167,84 @@ export const MoreInfo = () => {
                 </div>
 
                 <div className="main_content_iner">
-                    <div className="container-fluid main_body dwnld pb-4">
-                        <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-                        <h4 className="text-muted">Detailed Information on: {client.firstName} {client.lastName}</h4>
-
-                        <div className="btn download pb-3" onClick={print}>
-                            <img src="/images/download.png" style={{width: '35px'}} />
-                        </div>
-                        </div>
-                        <hr />
+                    <div className="container-fluid main_body">
                         
-                        <div className="single-form" ref={componentRef}>
-                            <div className="pt-4">
+                        <h2 className="text-center text-muted">Applicant List</h2>
 
-                                {/* personal details part */}
-                                <h5 className="card-title"><img src="/images/personal-details.png" style={{width: '35px', marginRight: '12px'}} />Personal Details</h5>
-                                <hr/>
-                                <div className="more-information"><p className="more-information-content">Name </p> {client.firstName} {client.lastName}</div>
-                                <div className="more-information"><p className="more-information-content">E-mail </p> {client.email}</div>
-                                <div className="more-information"><p className="more-information-content">Phone </p> {client.cellPhone}</div>
-                                
-                                {/* living arrangements part */}
-                                <h5 className="card-title pt-3"><img src="/images/living.png" style={{width: '35px', marginRight: '12px'}} />Living Arrangements</h5>
-                                <hr/>
-                                <div className="more-information">
-                                    <p className="more-information-content">Number of Children in Household </p> {client.childrenNumber}
-                                </div>
-                                <div className="more-information">
-                                    <p className="more-information-content">Ages of Children</p> {client.childrenAge}
-                                </div>
-                                <div className="">
-                                    <div className="more-information-content">Information regarding existing pet in Household </div> 
-                                    <p>{client.existingPetInfo}</p>
-                                </div>
-                                <div className="more-information">
-                                    <p className="more-information-content">Are Existing Household Pet Altered</p> {client.alter}
-                                </div>
-                                <div className="more-information">
-                                    <p className="more-information-content">Foster Program Interested In</p> {client.program}
-                                </div>
-                                <div className="">
-                                    <div className="more-information-content">Animal Interested In</div> 
-                                    <p>{str}</p>  
-                                </div>
-
-
-                                {/* foster information part */}
-                                <h5 className="card-title pt-3"><img src="/images/details-pane.png" style={{width: '35px', marginRight: '12px'}} />Foster Information</h5>
-                                <hr/>
-                                <div className="card-text">
-                                    <img src="/images/area.png" style={{width: '25px', marginRight: '12px'}} />
-                                    <strong>Area where the Animal will be Fostered:</strong>
-                                    <div style={{paddingLeft: '37px'}}>
-                                        {client.area}
-                                    </div>
-                                </div>
-                                <div className="card-text">
-                                    <img src="/images/experience-skill.png" style={{width: '25px', marginRight: '12px'}} />
-                                    <strong>Experience:</strong>
-                                    <div style={{paddingLeft: '37px'}}>
-                                        {client.experience}
-                                    </div>
-                                    
-                                </div>
-                                <div className="card-text">
-                                    <img src="/images/about-us.png" style={{width: '25px', marginRight: '12px'}} />
-                                    <strong>About Client:</strong>
-                                    <div style={{paddingLeft: '37px'}}>
-                                        {client.aboutyou}
-                                    </div>
-                                </div>
-                            </div>
+                        <div className="row">
+                            <h2 className="title-form" style={{}}>
+                                Personal Information
+                            </h2>
                         </div>
 
+                        <hr></hr>
+
+                        <div className="row">
+
+                            <form className="row g-3">
+                                
+                                <div className="col-md-6">
+                                    <label htmlFor="inputFname" className="form-label">FirstName</label>
+                                    <input 
+                                    type="firstName" 
+                                    className="form-control" 
+                                    id="inputFname"
+                                    name="firstName"
+                                    value={firstName}
+                                    onChange={(e)=> setFirstName(e.target.value)}
+                                    />
+                                </div>
+                                <div className="col-md-6">
+                                    <label htmlFor="inputLname" className="form-label">LastName</label>
+                                    <input 
+                                    type="lastName" 
+                                    className="form-control" 
+                                    id="inputLname"
+                                    name="lastName"
+                                    value={lastName}
+                                    onChange={(e) => setLastName(e.target.value)}
+                                    />
+                                </div>
+
+                                <div className="col-md-12">
+                                    <label htmlFor="inputEmail" className="form-label">Email</label>
+                                    <input 
+                                    type="email" 
+                                    className="form-control" 
+                                    id="inputEmail"
+                                    name="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    />
+                                </div>
+
+                                <div className="col-md-6">
+                                    <label htmlFor="inputCellPhone" className="form-label">Cell Phone</label>
+                                    <input 
+                                    type="cellphone" 
+                                    className="form-control" 
+                                    id="inputCellPhone"
+                                    name="cellPhone"
+                                    value={cellPhone}
+                                    onChange={(e) => setCellphone(e.target.value)}
+                                    />
+                                </div>
+
+                                <div className="container d-flex" style={{marginTop: 20, marginBottom: 20, justifyContent:'center'}}>
+                                    <button className="btn btn-success" style={{marginRight: 10}} onClick={(e) => Update(e)} >Update</button>
+                                    <div>
+                                        <Link className="btn btn-danger" to={`/edit_forms`}>Cancel</Link>
+                                    </div>
+                                </div>
+
+                            </form>
+
+                        </div>
                     </div>
                 </div>
                 
             </section>
         </div>
-    
+
     )
 }

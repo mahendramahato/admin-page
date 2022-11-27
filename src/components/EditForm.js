@@ -1,36 +1,78 @@
-import {React, useState, useEffect, useRef} from 'react'
-import { Link, useParams } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
 import AdminAPI from '../services/AdminAPI'
-import ReactToPrint, { useReactToPrint } from 'react-to-print'
+import { Link } from 'react-router-dom'
+import _ from 'lodash'
+import ReactPaginate from 'react-paginate'
 
-export const MoreInfo = () => {
+export const EditForm = () => {
 
     const [openNav, setOpenNav] = useState(false)
     const showSidebar = () => setOpenNav(!openNav)
 
-    const [client, setClient] = useState([])
-    const {formId} = useParams();
+    const [applicants, setApplicants] = useState([])
+    const [pageNumber, setPageNumber] = useState(0)
 
-    useEffect(() => {
-        AdminAPI.getClientById(formId).then((response) =>{
-            setClient(response.data)
-        }).catch(error=>{
+    const getAllClients = () => {
+        AdminAPI.getAllClients().then((response) => {
+            setApplicants(response.data)
+        }).catch(error =>{
             console.log(error)
         })
+    }
+
+    useEffect(() => {
+        getAllClients();
     }, [])
 
-    // create download the pdf page code
-    const componentRef = useRef()
-    const print = useReactToPrint({
-        content: () => componentRef.current,
-    })
+    // delete client form completely
+    const deleteForm = (clientId) => {
+        AdminAPI.deleteForm(clientId).then((response) =>{
+            getAllClients();
+        }).catch(error =>{
+            console.log(error);
+        })
+    }
 
-    // converting array of items into comma separated strings
-    const arr = client.animal_interest
-    const str = String(arr)
+    const usersPerPage = 5
+    // no.of pages visited sofar
+    const pagesVisited = pageNumber * usersPerPage
+
+    const displayUsers = applicants
+        .slice(pagesVisited, pagesVisited + usersPerPage)
+        .map((item) => {
+            return(
+                <tbody className="text-center">
+                    <tr key={item.id}>
+                        <td>{item.formId}</td>
+                        <td>
+                            <div className="">
+                                <p className="fw-bold mb-1">{item.firstName} {item.lastName}</p>
+                                <p className="text-muted mb-0">{item.email}</p>
+                            </div>
+                        </td>
+                        <td>{item.cellPhone}</td>
+                        <td>
+                            <Link to={`/edit_client_info_&_data/${item.formId}`} className="btn">
+                                <img style={{width: '25px'}} src="/images/update.png" alt="update" />
+                                <p className="text-muted">Update</p>
+                            </Link>
+                            <a className="btn" onClick={()=>deleteForm(item.formId)}
+                            style={{marginLeft:10}}><img style={{width: '25px'}} src="/images/delete-forever.png" alt="delete" />
+                            <p className="text-muted">Delete</p>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            )
+        })
+    
+        const pageCount = Math.ceil(applicants.length / usersPerPage)
+
+        const changePage = ({selected}) => {
+            setPageNumber(selected)
+        }
 
     return (
-        
 
         <div className="container-fluid">
 
@@ -158,84 +200,45 @@ export const MoreInfo = () => {
                 </div>
 
                 <div className="main_content_iner">
-                    <div className="container-fluid main_body dwnld pb-4">
-                        <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-                        <h4 className="text-muted">Detailed Information on: {client.firstName} {client.lastName}</h4>
+                    <div className="container-fluid main_body">
 
-                        <div className="btn download pb-3" onClick={print}>
-                            <img src="/images/download.png" style={{width: '35px'}} />
-                        </div>
-                        </div>
-                        <hr />
+                        <h2 className="text-center text-muted">Edit Applicant Forms</h2>
                         
-                        <div className="single-form" ref={componentRef}>
-                            <div className="pt-4">
-
-                                {/* personal details part */}
-                                <h5 className="card-title"><img src="/images/personal-details.png" style={{width: '35px', marginRight: '12px'}} />Personal Details</h5>
-                                <hr/>
-                                <div className="more-information"><p className="more-information-content">Name </p> {client.firstName} {client.lastName}</div>
-                                <div className="more-information"><p className="more-information-content">E-mail </p> {client.email}</div>
-                                <div className="more-information"><p className="more-information-content">Phone </p> {client.cellPhone}</div>
-                                
-                                {/* living arrangements part */}
-                                <h5 className="card-title pt-3"><img src="/images/living.png" style={{width: '35px', marginRight: '12px'}} />Living Arrangements</h5>
-                                <hr/>
-                                <div className="more-information">
-                                    <p className="more-information-content">Number of Children in Household </p> {client.childrenNumber}
-                                </div>
-                                <div className="more-information">
-                                    <p className="more-information-content">Ages of Children</p> {client.childrenAge}
-                                </div>
-                                <div className="">
-                                    <div className="more-information-content">Information regarding existing pet in Household </div> 
-                                    <p>{client.existingPetInfo}</p>
-                                </div>
-                                <div className="more-information">
-                                    <p className="more-information-content">Are Existing Household Pet Altered</p> {client.alter}
-                                </div>
-                                <div className="more-information">
-                                    <p className="more-information-content">Foster Program Interested In</p> {client.program}
-                                </div>
-                                <div className="">
-                                    <div className="more-information-content">Animal Interested In</div> 
-                                    <p>{str}</p>  
-                                </div>
-
-
-                                {/* foster information part */}
-                                <h5 className="card-title pt-3"><img src="/images/details-pane.png" style={{width: '35px', marginRight: '12px'}} />Foster Information</h5>
-                                <hr/>
-                                <div className="card-text">
-                                    <img src="/images/area.png" style={{width: '25px', marginRight: '12px'}} />
-                                    <strong>Area where the Animal will be Fostered:</strong>
-                                    <div style={{paddingLeft: '37px'}}>
-                                        {client.area}
-                                    </div>
-                                </div>
-                                <div className="card-text">
-                                    <img src="/images/experience-skill.png" style={{width: '25px', marginRight: '12px'}} />
-                                    <strong>Experience:</strong>
-                                    <div style={{paddingLeft: '37px'}}>
-                                        {client.experience}
-                                    </div>
-                                    
-                                </div>
-                                <div className="card-text">
-                                    <img src="/images/about-us.png" style={{width: '25px', marginRight: '12px'}} />
-                                    <strong>About Client:</strong>
-                                    <div style={{paddingLeft: '37px'}}>
-                                        {client.aboutyou}
-                                    </div>
-                                </div>
-                            </div>
+                        <div style={{paddingTop: '20px'}}>
+                            <table className="table align-middle mb-0 bg-white">
+                                <thead className="bg-light text-center">
+                                    <tr>
+                                    <th>Id</th>
+                                    <th>Applicant Info</th>
+                                    <th>Phone Number</th>
+                                    <th style={{paddingLeft: '30px'}}>Actions</th>
+                                    </tr>
+                                </thead>
+                                { displayUsers }
+                            </table>
                         </div>
 
                     </div>
+
+                    {/* pagination menu code */}
+                    <div className="row d-flex justify-content-center" style={{marginTop: 20}}>
+                        <ReactPaginate 
+                            previousLabel={"Previous"}
+                            nextAriaLabel={"Next"}
+                            pageCount={ pageCount }
+                            onPageChange={changePage}
+                            containerClassName={"paginationBttns"}
+                            previousLinkClassName={"previousBttn"}
+                            nextLinkClassName={"nextBttn"}
+                            disabledClassName={"paginationDisabled"}
+                            activeClassName={"paginationActive"}
+                        />
+                    </div>
+                    
                 </div>
                 
             </section>
         </div>
-    
+
     )
 }

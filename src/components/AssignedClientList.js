@@ -1,65 +1,110 @@
-import { Link } from 'react-router-dom'
-import AnimalAPI from '../services/AnimalAPI';
 import React, { useState, useEffect } from 'react'
-import _ from 'lodash'
-import ReactPaginate from 'react-paginate';
+import AdminAPI from '../services/AdminAPI'
+import { Link } from 'react-router-dom'
+import _, { filter } from 'lodash'
+import ReactPaginate from 'react-paginate'
 
-export const ListAnimals = () => {
+
+export const AssignedClientList = () => {  
 
     const [openNav, setOpenNav] = useState(false)
     const showSidebar = () => setOpenNav(!openNav)
 
-    const [animals, setAnimals] = useState([])
+    const [applicants, setApplicants] = useState([])
+    const [filterF, setFilterF] = useState('All')  
+
     const [pageNumber, setPageNumber] = useState(0)
 
-    const getAllAnimals = () => {
-        AnimalAPI.getAllAnimals().then((response) => {
-            setAnimals(response.data)
-            // console.log(response.data)
+    const getAllAssignedAnimals = () => {
+        AdminAPI.getAllAssignedAnimals().then((response)=>{
+            setApplicants(response.data)
+            //console.log(response.data)
+
         }).catch(error =>{
             console.log(error)
         })
     }
 
     useEffect(() => {
-        getAllAnimals();
+        getAllAssignedAnimals();
     }, [])
+
+    const filteredItems = applicants.filter((sort =>{
+
+        // filter by foster program
+
+        if(filterF === 'Short Term Foster (average of 1-3 weeks)'){
+            return sort.aprogram === 'Short Term Foster (average of 1-3 weeks)'
+        }else if(filterF === 'All'){
+            return applicants
+        }
+
+        if(filterF === 'Family Foster (potentially 8-12 weeks)'){
+            return sort.aprogram === 'Family Foster (potentially 8-12 weeks)'
+        }else if(filterF === 'All'){
+            return applicants
+        }
+
+        if(sort.aprogram === filterF){
+            return sort.aprogram === 'Weekend Sleepovers (2-3 nights)'
+        }else if(filterF === 'All'){
+            return applicants
+        }
+
+        // filter by animal type
+        if(filterF === 'Dogs'){
+            return sort.aanimal_interest[0] === 'Bottle Baby Puppies' || sort.aanimal_interest[0] === 'Puppies (up to 6 months)' 
+            || sort.aanimal_interest[0] === 'Small Adult (less than 25 lbs)' || sort.aanimal_interest[0] === 'Medium Adult (25 - 45 lbs)' 
+            || sort.aanimal_interest[0] === 'Large Adult (50 - 110 lbs)' || sort.aanimal_interest[0] === 'Pregnant/ Nursing Dog Moms' || sort.aanimal_interest[0] === 'Shy/ Fearful Dogs'
+            || sort.aanimal_interest[0] === 'Seniors' || sort.aanimal_interest[0] === 'Medical Cases Dogs'  
+        }else if(filterF === 'All'){
+            return applicants
+        }
+
+        if(filterF === 'Cats'){
+            return sort.aanimal_interest[0] === 'Bottle Kitties ' || sort.aanimal_interest[0] === 'Pregnant/ Nursing Moms' 
+            || sort.aanimal_interest[0] === 'Adult Cats' || sort.aanimal_interest[0] === 'Cats/Kittens Needing Socialization' 
+            || sort.aanimal_interest[0] === 'Cats/Kittens with Special Needs' || sort.aanimal_interest[0] === 'Senior Cats' || sort.aanimal_interest[0] === 'Medical Cases'
+        }else if(filterF === 'All'){
+            return applicants
+        }
+
+    }))
     
     const usersPerPage = 5
     // no.of pages visited sofar
     const pagesVisited = pageNumber * usersPerPage
 
-    const displayUsers = animals
+    const displayUsers = filteredItems
         .slice(pagesVisited, pagesVisited + usersPerPage)
         .map((item) => {
             return(
                 <tbody className="text-center">
-                    <tr key={item.animalId}>
-                        <td>{item.animalId}</td>
+                    <tr key={item.aaId}>
+                        <td>{item.aaId}</td>
                         <td>
                             <div className="">
-                                <p className="fw-bold mb-1">{item.petName}</p>
+                                <p className="fw-bold mb-1">{item.afirstName} {item.alastName}</p>
+                                <p className="text-muted mb-0">{item.aemail}</p>
                             </div>
                         </td>
-                        <td><p className="text-muted mb-0">{item.type}</p></td>
-                        <td>{item.program}</td>
-                        <td><h4><span className="badge bg-warning text-dark">{item.status}</span></h4></td>
+                        <td>{item.acellPhone}</td>
+                        
                         <td>
-                            <Link to={`/more_info/${item.animalId}`} className="btn" style={{marginRight: '10px'}}>
-                                <img style={{width: '25px'}} src="/images/update.png" alt="update" />
-                                <p className="text-muted">Update</p>
+                            <h4><span className="badge bg-info text-dark">{item.petName}</span></h4>                                                    
+                        </td>
+                        <td>
+                            <Link to={`/assigned_client_more_info/${item.aaId}`} className="btn btn-warning" style={{marginRight: '10px'}}>
+                                Detail Info
                             </Link>
-                            <Link to={`/assign_pet/${item.animalId}`} className="btn">
-                                <img style={{width: '25px'}} src="/images/remove.png" alt="delete" />
-                                <p className="text-muted">Delete</p>
-                            </Link>
+                            
                         </td>
                     </tr>
                 </tbody>
             )
         })
     
-        const pageCount = Math.ceil(animals.length / usersPerPage)
+        const pageCount = Math.ceil(filteredItems.length / usersPerPage)
 
         const changePage = ({selected}) => {
             setPageNumber(selected)
@@ -194,8 +239,36 @@ export const ListAnimals = () => {
 
                 <div className="main_content_iner">
                     <div className="container-fluid main_body">
+
+                        <h2 className="text-center text-muted">Pet Assigned Client List</h2>
+                        <hr/>
+
+                        <div className="filter">
+                            <h4>Filter By: {filterF}</h4>
+                            <select className="selectpicker" value={filterF} onChange={(e)=> setFilterF(e.target.value)}>
+                                <option>
+                                    All
+                                </option>
+                                <option>
+                                    Weekend Sleepovers (2-3 nights)
+                                </option>
+                                <option>
+                                    Short Term Foster (average of 1-3 weeks)
+                                </option>
+                                <option>
+                                    Family Foster (potentially 8-12 weeks)
+                                </option>
+                                <option>
+                                    Dogs
+                                </option>
+                                <option>
+                                    Cats
+                                </option>
+                            </select>
+
+                        </div>
                         
-                        <h2 className="text-center text-muted">Animal List</h2>
+                        <hr/>
                         
                         <div style={{paddingTop: '20px'}}>
                             <table className="table align-middle mb-0 bg-white">
@@ -203,15 +276,15 @@ export const ListAnimals = () => {
                                     <tr>
                                     <th>Id</th>
                                     <th>Name</th>
-                                    <th>Type</th>
-                                    <th>Available for</th>
-                                    <th>Assigned Status</th>
-                                    <th>Action</th>
+                                    <th>Phone Number</th>
+                                    <th>Assigned Animal</th>
+                                    <th>Actions</th>
                                     </tr>
                                 </thead>
-                                { displayUsers }
+                                {displayUsers}
                             </table>
                         </div>
+
                     </div>
 
                     {/* pagination menu code */}
