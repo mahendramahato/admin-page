@@ -3,9 +3,9 @@ import axios from "axios";
 const ADMIN_REST_API_URL = 'http://localhost:8080/api/clients'
 const ASSIGN_ANIMAL = 'http://localhost:8080/api/clients/assign/'
 
-const APPOINTMENT_SCALE_LOW = 'http://localhost:8080/api/clients/low/'
-const APPOINTMENT_SCALE_MEDIUM = 'http://localhost:8080/api/clients/medium/'
-const APPOINTMENT_SCALE_HIGH = 'http://localhost:8080/api/clients/high/'
+const APPOINTMENT_SCALE_LOW = 'http://localhost:8080/api/clients/alists/low/'
+const APPOINTMENT_SCALE_MEDIUM = 'http://localhost:8080/api/clients/alists/medium/'
+const APPOINTMENT_SCALE_HIGH = 'http://localhost:8080/api/clients/alists/high/'
 
 const WEEKEND_FOSTER = 'http://localhost:8080/api/clients/weekend'
 const SHORT_FOSTER = 'http://localhost:8080/api/clients/short'
@@ -32,7 +32,12 @@ class AdminAPI{
     updateForm(clientId, client){
         return axios.put(ADMIN_REST_API_URL + '/' + clientId, client);
     }
+    //create client
+    createClient(un_client){
+        return axios.post(ADMIN_REST_API_URL, un_client)
+    }
 
+    // --------------------------------------------------------------------------
 
     // create assigned animal
     createAssignClient(assignedPet){
@@ -55,40 +60,39 @@ class AdminAPI{
         return axios.put(ASSIGN_ANIMAL + clientId, client);
     }
 
+    // --------------------------------------------------------------------------
+    // query for low high and medium appointment scale
 
+    // get all list of clients with low scale appointments
+    getAllAAnimalsByLow(){
+        return axios.get(APPOINTMENT_SCALE_LOW)
+    }
 
+    // get all list of clients with medium scale appointments
+    getAllAAnimalsByMedium(){
+        return axios.get(APPOINTMENT_SCALE_MEDIUM)
+    }
 
+    // get all list of clients with high scale appointments
+    getAllAAnimalsByHigh(){
+        return axios.get(APPOINTMENT_SCALE_HIGH)
+    }
 
+    //----------------------------------------------------------------------
+    // get all list of clients with weekend foster
+    getAllClientByWeekend(){
+        return axios.get(WEEKEND_FOSTER)
+    }
 
-        // get all list of clients with low scale appointments
-        getAllClientByLow(){
-            return axios.get(APPOINTMENT_SCALE_LOW)
-        }
-    
-        // get all list of clients with medium scale appointments
-        getAllClientByMedium(){
-            return axios.get(APPOINTMENT_SCALE_MEDIUM)
-        }
-    
-        // get all list of clients with high scale appointments
-        getAllClientByHigh(){
-            return axios.get(APPOINTMENT_SCALE_HIGH)
-        }
-    
-        // get all list of clients with weekend foster
-        getAllClientByWeekend(){
-            return axios.get(WEEKEND_FOSTER)
-        }
-    
-        // get all list of clients with short foster
-        getAllClientByShort(){
-            return axios.get(SHORT_FOSTER)
-        }
-    
-        // get all list of clients with family foster
-        getAllClientByFamily(){
-            return axios.get(FAMILY_FOSTER)
-        }
+    // get all list of clients with short foster
+    getAllClientByShort(){
+        return axios.get(SHORT_FOSTER)
+    }
+
+    // get all list of clients with family foster
+    getAllClientByFamily(){
+        return axios.get(FAMILY_FOSTER)
+    }
 
 
 }

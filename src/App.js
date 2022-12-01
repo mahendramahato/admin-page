@@ -13,6 +13,8 @@ import { AssignedClientList } from './components/AssignedClientList';
 import { AssignedClientInfo } from './components/AssignedClientInfo';
 import { EditAssignedClient } from './components/EditAssignedClient';
 import { UpdateAssignedClient } from './components/UpdateAssignedClient';
+import { UpdateAnimal } from './components/UpdateAnimal';
+import { LoginPage } from './components/LoginPage';
 
 function App() {
   return (
@@ -21,11 +23,13 @@ function App() {
         <div className="container-fluid">
           <Routes>
             
-            <Route exact path="/" element={<Dashboard />} />
+            <Route exact path="/" element={<LoginPage />} />
+            <Route path="/login_page" element={<LoginPage />} />
             <Route path="/dashboard" element={<Dashboard />} />
 
             <Route path="/add_animals" element={<AddAnimals />} />
             <Route path="/list_animals" element={<ListAnimals />} />
+            <Route path="/update_animals/:animalId" element={<UpdateAnimal />} />
 
             <Route path="/form_list" element={<ListData />} />
             <Route path="/more_info/:formId" element={<MoreInfo />} />

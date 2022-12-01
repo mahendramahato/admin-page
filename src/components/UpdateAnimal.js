@@ -1,9 +1,9 @@
-import { Link } from 'react-router-dom'
-import React, { useState } from 'react'
+import { Link, useParams } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import AnimalAPI from '../services/AnimalAPI'
 
-export const AddAnimals = () => {
+export const UpdateAnimal = () => {
 
     const [openNav, setOpenNav] = useState(false)
     const showSidebar = () => setOpenNav(!openNav)
@@ -14,23 +14,33 @@ export const AddAnimals = () => {
     const [status, setStatus] = useState('')
 
     const navigate = useNavigate()
+    const {animalId} = useParams()
 
-    const saveAnimal= (e) => {
+    const Update = (e) => {
         e.preventDefault()
 
         const animal = {petName, type, program, status}
 
-        AnimalAPI.createAnimal(animal).then((response) =>{
+        AnimalAPI.updateForm(animalId, animal).then((response) =>{
 
             console.log(response.data)
             navigate('/list_animals')
 
         }).catch(error =>{
             console.log(error)
-        })
-
-        
+        })  
     }
+
+    useEffect(() => {
+        AnimalAPI.getAnimalById(animalId).then((response) =>{
+            setPetName(response.data.petName)
+            setType(response.data.type)
+            setFosterProgram(response.data.program)
+            setStatus(response.data.status)
+        }).catch(error => {
+            console.log(error)
+        })
+    }, [])
 
     return (
 
@@ -162,7 +172,7 @@ export const AddAnimals = () => {
                 <div className="main_content_iner">
                     <div className="container-fluid main_body">
                         <div className="row">
-                            <h2 className="text-center text-muted">Add Animal</h2>
+                            <h2 className="text-center text-muted">Update Animal</h2>
                         </div>
 
                         <form>
@@ -171,7 +181,7 @@ export const AddAnimals = () => {
                             <div className="row mb-3">
                                 <label htmlFor="inputName" className="col-sm-2 col-form-label">Name</label>
                                 <div className="col-sm-5">
-                                <input type="name" className="form-control" 
+                                <input type="name" className="form-control" value={petName}
                                 name="petName" id="inputName" onChange={(e)=> setPetName(e.target.value)}/>
                                 </div>
                             </div>
@@ -393,17 +403,17 @@ export const AddAnimals = () => {
                                 <div className="col-sm-10">
                                 <div className="form-check statyes">
                                     <input className="form-check-input" type="radio" 
-                                    name="status" id="gridRadios11" value={"Yes"}
+                                    name="status" id="gridRadios1" value={"Yes"}
                                     onChange={(e)=> setStatus(e.target.value)} />
-                                    <label className="form-check-label" htmlFor="gridRadios11">
+                                    <label className="form-check-label" htmlFor="gridRadios1">
                                     Active
                                     </label>
                                 </div>
                                 <div className="form-check statno">
                                     <input className="form-check-input" type="radio"
-                                    name="status" id="gridRadios21" value={"No"}
+                                    name="status" id="gridRadios2" value={"No"}
                                     onChange={(e)=> setStatus(e.target.value)} />
-                                    <label className="form-check-label" htmlFor="gridRadios21">
+                                    <label className="form-check-label" htmlFor="gridRadios2">
                                     InActive
                                     </label>
                                 </div>
@@ -411,7 +421,7 @@ export const AddAnimals = () => {
                             </fieldset>
 
                             <button type="submit" className="btn btn-primary"
-                            onClick={(e)=> saveAnimal(e)} >Save</button>
+                            onClick={(e)=> Update(e)} >Update</button>
                         </form>
 
                     </div>

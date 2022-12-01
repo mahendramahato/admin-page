@@ -52,10 +52,15 @@ export const ListData = () => {
 
         // filter by animal type
         if(filterF === 'Dogs'){
-            return sort.animal_interest[0] === 'Bottle Baby Puppies' || sort.animal_interest[0] === 'Puppies (up to 6 months)' 
-            || sort.animal_interest[0] === 'Small Adult (less than 25 lbs)' || sort.animal_interest[0] === 'Medium Adult (25 - 45 lbs)' 
-            || sort.animal_interest[0] === 'Large Adult (50 - 110 lbs)' || sort.animal_interest[0] === 'Pregnant/ Nursing Dog Moms' || sort.animal_interest[0] === 'Shy/ Fearful Dogs'
-            || sort.animal_interest[0] === 'Seniors' || sort.animal_interest[0] === 'Medical Cases Dogs'  
+            return sort.animal_interest[0] === 'Bottle Baby Puppies' 
+            || sort.animal_interest[0] === 'Puppies (up to 6 months)' 
+            || sort.animal_interest[0] === 'Small Adult (less than 25 lbs)' 
+            || sort.animal_interest[0] === 'Medium Adult (25 - 45 lbs)' 
+            || sort.animal_interest[0] === 'Large Adult (50 - 110 lbs)' 
+            || sort.animal_interest[0] === 'Pregnant/ Nursing Dog Moms' 
+            || sort.animal_interest[0] === 'Shy/ Fearful Dogs'
+            || sort.animal_interest[0] === 'Seniors' 
+            || sort.animal_interest[0] === 'Medical Cases Dogs'  
         }else if(filterF === 'All'){
             return applicants
         }
@@ -225,9 +230,9 @@ export const ListData = () => {
                                         <div className="dropdown-content">
                                             <p>Welcome Admin!</p>
                                             <hr/>
-                                            <a className="out" href="#">
+                                            <Link to="/login_page" className="btn out" href="#">
                                                 Log Out <img style={{width: '25px'}} src="/images/exit.png" alt="out"/>
-                                            </a>
+                                            </Link>
                                         </div>
                                     </div>
 

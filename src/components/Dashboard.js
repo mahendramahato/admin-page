@@ -5,81 +5,40 @@ import { Pie } from 'react-chartjs-2'
 import { Doughnut } from 'react-chartjs-2'
 import {Chart as ChartJs} from  'chart.js/auto'
 import AdminAPI from '../services/AdminAPI'
+import { lowerCase } from 'lodash'
+import AnimalAPI from '../services/AnimalAPI'
 
 export const Dashboard = () => {
 
+    var l = 0;
+
     const [openNav, setOpenNav] = useState(false)
     const showSidebar = () => setOpenNav(!openNav)
-    const [animaldata, setAnimalData] = useState([])
     
     const [low, setLow] = useState([])
     const [med, setMed] = useState([])
-    const [high, setHigh] = useState([])
-    
+    const [high, setHigh] = useState([]) 
 
     const testdata = [
-        {id:1, year: 2016, usergain: 8000, userlost: 823},
-        {id:2, year: 2017, usergain: 2000, userlost: 5000},
-        {id:3, year: 2018, usergain: 300, userlost: 6000},
+        {id:1, program: "Weekend", usergain: 8000, userlost: 823},
+        {id:2, program: "Family", usergain: 2000, userlost: 5000},
+        {id:3, program: "Short", usergain: 300, userlost: 6000},
     ]
 
     const [bdata, setBdata] = useState({
-        labels: testdata.map((item)=> item.year),
+        labels: testdata.map((item)=> item.program),
         datasets: [{
             label: "User gained",
             data: testdata.map((item)=> item.usergain), 
             backgroundColor: ["#20c997", "#ffc107", "#0dcaf0"]         
         }]
     })
-
-    // code for showing appointments
-    const dv = 0;
-    const [l, setL] = useState(dv)
-    const getAllClientByLow = () =>{
-        AdminAPI.getAllClientByLow().then((response) => {
-            setLow(response.data)
-            // console.log(response.data) 
-            // console.log(response.data.length)   
-            setL(response.data.length)   
-            
-        }).catch(error => {
-            console.log(error)
-        })
-    }
-
-    const getAllClientByMedium = () =>{
-        AdminAPI.getAllClientByMedium().then((response) => {
-            setMed(response.data)
-
-        }).catch(error => {
-            console.log(error)
-        })
-    }
-
-    const getAllClientByHigh = () =>{
-        AdminAPI.getAllClientByHigh().then((response) => {
-            setHigh(response.data)
-
-        }).catch(error => {
-            console.log(error)
-        })
-    }
-    
-    useEffect(() => {
-
-        getAllClientByLow();
-        getAllClientByMedium();
-        getAllClientByHigh();
-        
-    }, [])  
-
-    // let l = 10
     
 
-    const program_data = [
-        {id:1, program: "Low", number: 8},
-        {id:2, program: "Medium", number: 5},
-        {id:3, program: "High", number: 8},
+    var program_data = [
+        {id:1, program: "Low", number: 5},
+        {id:2, program: "Medium", number: 2},
+        {id:3, program: "High", number: 2},
     ]
 
     const [pdata, setPdata] = useState({
@@ -87,10 +46,55 @@ export const Dashboard = () => {
         datasets: [{
             label: "Foster Program",
             data: program_data.map((item)=> item.number),
-            backgroundColor: ["red", "green", "purple"]
+            backgroundColor: ["green", "yellow", "red"]
         }]
     })
+
+    const getAllAAnimalsByLow = () =>{
+        AdminAPI.getAllAAnimalsByLow().then((response) => {
+            setLow(response.data)
+            console.log(response.data)
+            
+        }).catch(error => {
+            console.log(error)
+        })
+    }
+    const getAllAAnimalsByMedium = () =>{
+        AdminAPI.getAllAAnimalsByMedium().then((response) => {
+            setMed(response.data)
+
+        }).catch(error => {
+            console.log(error)
+        })
+    }
+    const getAllAAnimalsByHigh = () =>{
+        AdminAPI.getAllAAnimalsByHigh().then((response) => {
+            setHigh(response.data)
+
+        }).catch(error => {
+            console.log(error)
+        })
+    }
+
+    const [animals, setAnimals] = useState([])
+    let d = 0
+    let c = 0
+    const getAllAnimals = () =>{
+        AnimalAPI.getAllAnimals().then((response) =>{
+            setAnimals(response.data)
+        }).catch(error => {
+            console.log(error)
+        })
+    }
     
+    useEffect(() => {
+
+        getAllAAnimalsByLow();
+        getAllAAnimalsByMedium();
+        getAllAAnimalsByHigh();
+        getAllAnimals();
+        
+    }, []) 
 
     return (
 
@@ -206,9 +210,9 @@ export const Dashboard = () => {
                                         <div className="dropdown-content">
                                             <p>Welcome Admin!</p>
                                             <hr/>
-                                            <a className="out" href="#">
+                                            <Link to="/login_page" className="btn out" href="#">
                                                 Log Out <img style={{width: '25px'}} src="/images/exit.png" alt="out"/>
-                                            </a>
+                                            </Link>
                                         </div>
                                     </div>
 
@@ -224,36 +228,51 @@ export const Dashboard = () => {
                         {/* cards for total animals cats and dogs */}
                         <div className="row row-fix">
                             <div className="col-md-4">
-                                <div className="card count-animal1 mb-3">
-                                    <div className="card-header text-white"><h4>Total Pets</h4></div>
+                                <div className="card count-animal1 mb-3 shadow">
+                                    <div className="card-header text-white">
+                                        <h4>Total Pets</h4>
+                                        {
+                                            animals.map(ani =>{
+                                                if(ani.type === "Bottle Baby Puppies" || ani.type === "Puppies (up to 6 months)" ||
+                                                ani.type === "Small Adult (less than 25 lbs)" || ani.type === "Medium Adult (25 - 45 lbs)"
+                                                || ani.type === "Large Adult (50 - 110 lbs)" || ani.type === "Pregnant/ Nursing Dog Moms" || ani.type === "Shy/ Fearful Dogs"
+                                                || ani.type === "Seniors"
+                                                || ani.type === "Medical Cases Dogs"){
+                                                    d++
+                                                }else{
+                                                    c++
+                                                }
+                                            })
+                                        }
+                                    </div>
                                     <div className="card-body text-white ">
                                         <div className="incard">
                                             <img style={{width: '35%'}} src="./images/pet.png" alt="animal" />
-                                            <p>10</p>
+                                            <p>{animals.length}</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
                             <div className="col-md-4">
-                                <div className="card count-animal2 mb-3">
+                                <div className="card count-animal2 mb-3 shadow">
                                     <div className="card-header text-white"><h4>Total Dogs</h4></div>
                                     <div className="card-body text-white">
                                         <div className="incard">
                                             <img style={{width: '35%'}} src="./images/animal.png" alt="animal" />
-                                            <p>10</p>
+                                            <p>{d}</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
                             <div className="col-md-4">
-                            <div className="card count-animal3 mb-3">
+                            <div className="card count-animal3 mb-3 shadow">
                                 <div className="card-header text-white"><h4>Total Cats</h4></div>
                                     <div className="card-body text-white">
                                         <div className="incard">
                                             <img style={{width: '35%'}} src="./images/cat.png" alt="animal" />
-                                            <p>10</p>
+                                            <p>{c}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -267,7 +286,7 @@ export const Dashboard = () => {
                                 <h2 className="ribbon3">Upcoming Appointments</h2>
                             </div>
                             <div className="accordion" id="accordionExample">
-                                <div className="accordion-item">
+                                <div className="accordion-item shadow">
                                     <h2 className="accordion-header" id="headingOne">
                                     <button style={{background: '#f8d7da', fontSize: '20px'}} className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                                         High Severity
@@ -279,33 +298,33 @@ export const Dashboard = () => {
                                         <table className="table align-middle table-danger">
                                                 <thead className="text-center">
                                                     <tr>
-                                                    <th>#</th>
+                                                    {/* <th>#</th> */}
                                                     <th>Pet</th>
-                                                    <th>Pet Handler</th>
+                                                    {/* <th>Pet Handler</th> */}
                                                     <th>Appointment Info</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody className="text-center">
                                                     {
                                                         high.map(
-                                                            info =>
+                                                            info =>{
                                                         <tr key={info.formId}>
-                                                        <th>{info.formId}</th>
+                                                        {/* <th>{info.formId}</th> */}
                                                         <td>
                                                             <div className="">
                                                                 <p className="fw-bold mb-1">{info.petName}</p>
                                                                 <p className="text-muted mb-0">{info.animalType}</p>
                                                             </div>
                                                         </td>
-                                                        <td>
+                                                        {/* <td>
                                                             <div className="">
                                                                 <p className="fw-bold mb-1">{info.firstName} {info.lastName}</p>
                                                                 <p className="text-muted mb-0">{info.email}</p>
                                                             </div>
-                                                        </td>
+                                                        </td> */}
                                                         <td>{info.appointment_information}</td>
                                                         </tr>
-                                                        )
+                                                        })
                                                     }
                                                 </tbody>
                                         </table>
@@ -313,7 +332,7 @@ export const Dashboard = () => {
                                     </div>
                                     </div>
                                 </div>
-                                <div className="accordion-item">
+                                <div className="accordion-item shadow">
                                     <h2 className="accordion-header" id="headingTwo">
                                     <button style={{background: '#fff3cd', fontSize: '20px'}} className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                                         Medium Severity
@@ -325,9 +344,9 @@ export const Dashboard = () => {
                                         <table className="table align-middle table-warning">
                                             <thead className="text-center">
                                                 <tr>
-                                                <th>#</th>
+                                                {/* <th>#</th> */}
                                                 <th>Pet</th>
-                                                <th>Pet Handler</th>
+                                                {/* <th>Pet Handler</th> */}
                                                 <th>Appointment Info</th>
                                                 </tr>
                                             </thead>
@@ -335,23 +354,24 @@ export const Dashboard = () => {
                                                 {
                                                     med.map(
                                                         info =>
-                                                    <tr key={info.formId}>
-                                                    <th>{info.formId}</th>
-                                                    <td>
+                                                        
+                                                        <tr key={info.formId}>
+                                                        {/* <th>{info.formId}</th> */}
+                                                        <td>
+                                                            <div className="">
+                                                                <p className="fw-bold mb-1">{info.petName}</p>
+                                                                <p className="text-muted mb-0">{info.animalType}</p>
+                                                            </div>
+                                                        </td>
+                                                        {/* <td>
                                                         <div className="">
-                                                            <p className="fw-bold mb-1">{info.petName}</p>
-                                                            <p className="text-muted mb-0">{info.animalType}</p>
+                                                            <p className="fw-bold mb-1">{info.firstName} {info.lastName}</p>
+                                                            <p className="text-muted mb-0">{info.email}</p>
                                                         </div>
-                                                    </td>
-                                                    <td>
-                                                    <div className="">
-                                                        <p className="fw-bold mb-1">{info.firstName} {info.lastName}</p>
-                                                        <p className="text-muted mb-0">{info.email}</p>
-                                                    </div>
-                                                    </td>
-                                                    <td>{info.appointment_information}</td>
-                                                    </tr>
-                                                    )
+                                                        </td> */}
+                                                        <td>{info.appointment_information}</td>
+                                                        </tr>
+                                                        )
                                                 }
                                             </tbody>
                                         </table>
@@ -359,8 +379,15 @@ export const Dashboard = () => {
                                     </div>
                                     </div>
                                 </div>
-                                <div className="accordion-item">
+                                <div className="accordion-item shadow">
                                     <h2 className="accordion-header" id="headingThree">
+                                        {
+                                            low.map((i, index)=>{
+                                                if(i.appointment_scale == "Low"){
+                                                    l++;
+                                                }
+                                            } )
+                                        }
                                     <button style={{background: '#badbcc', fontSize: '20px'}} className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                                         Low Severity
                                     </button>
@@ -371,9 +398,9 @@ export const Dashboard = () => {
                                         <table className="table align-middle table-success">
                                                 <thead className="text-center">
                                                     <tr>
-                                                    <th>#</th>
+                                                    {/* <th>#</th> */}
                                                     <th>Pet</th>
-                                                    <th>Pet Handler</th>
+                                                    {/* <th>Pet Handler</th> */}
                                                     <th>Appointment Info</th>
                                                     </tr>
                                                 </thead>
@@ -382,19 +409,19 @@ export const Dashboard = () => {
                                                         low.map(
                                                             info =>
                                                         <tr key={info.formId}>
-                                                        <th>{info.formId}</th>
+                                                        {/* <th>{info.formId}</th> */}
                                                         <td>
                                                             <div className="">
                                                                 <p className="fw-bold mb-1">{info.petName}</p>
                                                                 <p className="text-muted mb-0">{info.animalType}</p>
                                                             </div>
                                                         </td>
-                                                        <td>
+                                                        {/* <td>
                                                             <div className="">
                                                                 <p className="fw-bold mb-1">{info.firstName} {info.lastName}</p>
                                                                 <p className="text-muted mb-0">{info.email}</p>
                                                             </div>
-                                                        </td>
+                                                        </td> */}
                                                         <td>{info.appointment_information}</td>
                                                         </tr>
                                                         )
@@ -409,55 +436,28 @@ export const Dashboard = () => {
                         </div>
 
                         {/* cards for assigned animals cats and dogs */}
-                        <div className="row pb-4 row-fix">
+                        <div className="row pb-4 row-fix d-flex" style={{alignItems: 'flex-end'}}>
 
-                            <div className="col-md-3">
-                                <div className="card count-animals1 mb-3">
-                                    <div className="card-header text-white"><h4>Unassigned Pets</h4></div>
-                                    <div className="card-body text-white ">
-                                        <div className="incard">
-                                            <img style={{width: '35%'}} src="./images/pet.png" alt="animal" />
-                                            <img style={{width: '15px'}} src="./images/unassign.png" alt="unassigned" />
-                                            <p>10</p>
+                            <div className="col-md-6">
+                                <div className="card shadow">
+                                    <div className="card-body d-flex"
+                                    style={{justifyContent: 'center'}}>
+                                        <div className="chart">
+                                            <Doughnut data={pdata} />
+                                            <h4 className="text-center pt-2">Appointment Chart</h4>
                                         </div>
+                                        
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="col-md-3">
-                                <div className="card count-animals2 mb-3">
-                                    <div className="card-header text-white"><h4>Assigned Pets</h4></div>
-                                    <div className="card-body text-white">
-                                        <div className="incard">
-                                            <img style={{width: '35%'}} src="./images/pet.png" alt="animal" />
-                                            <img style={{width: '15px'}} src="./images/assigned.png" alt="assigned" />
-                                            <p>10</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="col-md-3">
-                                <div className="card count-animals3 mb-3">
-                                    <div className="card-header text-white"><h4>Assigned Dogs</h4></div>
-                                    <div className="card-body text-white">
-                                        <div className="incard">
-                                            <img style={{width: '35%'}} src="./images/animal.png" alt="animal" />
-                                            <img style={{width: '15px'}} src="./images/assigned.png" alt="assigned" />
-                                            <p>10</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="col-md-3">
-                                <div className="card count-animals4 mb-3">
-                                    <div className="card-header text-white"><h4>Assigned Cats</h4></div>
-                                    <div className="card-body text-white">
-                                        <div className="incard">
-                                            <img style={{width: '35%'}} src="./images/cat.png" alt="animal" />
-                                            <img style={{width: '15px'}} src="./images/assigned.png" alt="assigned" />
-                                            <p>10</p>
+                            <div className="col-md-6">
+                                <div className="card shadow">
+                                    <div className="card-body d-flex"
+                                    style={{justifyContent: 'center'}}>
+                                        <div className="chart">
+                                            <Pie data={bdata} />
+                                            <h4 className="text-center pt-2">Foster Program</h4>
                                         </div>
                                     </div>
                                 </div>
@@ -465,29 +465,18 @@ export const Dashboard = () => {
 
                         </div> 
 
-                        <div className="row">
 
-                            <div className="col-md-6">
-                                <div className="chart">
-                                    <Bar data={bdata} />
+                        {/* <div className="row row-fix">
+                            <div className="col">
+                                <div className="card shadow">
+                                    <div className="card-body">
+                                        <div className="chart">
+                                            <Bar data={bdata} />
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-
-                            <div className="col-md-6">
-                                <div className="chart">
-                                    <Pie data={bdata} />
-                                </div>
-                            </div>
-
-                        </div>  
-
-                        <div className="row">
-                            <div className="col-md-6">
-                                <div className="chart">
-                                    <Doughnut data={pdata} />
-                                </div>
-                            </div>
-                        </div>
+                        </div> */}
 
                     </div>
                 </div>

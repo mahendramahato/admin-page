@@ -186,9 +186,9 @@ export const EditForm = () => {
                                         <div className="dropdown-content">
                                             <p>Welcome Admin!</p>
                                             <hr/>
-                                            <a className="out" href="#">
+                                            <Link to="/login_page" className="btn out" href="#">
                                                 Log Out <img style={{width: '25px'}} src="/images/exit.png" alt="out"/>
-                                            </a>
+                                            </Link>
                                         </div>
                                     </div>
 

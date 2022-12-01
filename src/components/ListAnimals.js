@@ -24,6 +24,15 @@ export const ListAnimals = () => {
     useEffect(() => {
         getAllAnimals();
     }, [])
+
+    // delete assigned client form completely
+    const deleteAnimal = (aid) => {
+        AnimalAPI.deleteForm(aid).then((response) =>{
+            getAllAnimals();
+        }).catch(error =>{
+            console.log(error);
+        })
+    }
     
     const usersPerPage = 5
     // no.of pages visited sofar
@@ -45,14 +54,14 @@ export const ListAnimals = () => {
                         <td>{item.program}</td>
                         <td><h4><span className="badge bg-warning text-dark">{item.status}</span></h4></td>
                         <td>
-                            <Link to={`/more_info/${item.animalId}`} className="btn" style={{marginRight: '10px'}}>
+                            <Link to={`/update_animals/${item.animalId}`} className="btn" style={{marginRight: '10px'}}>
                                 <img style={{width: '25px'}} src="/images/update.png" alt="update" />
                                 <p className="text-muted">Update</p>
                             </Link>
-                            <Link to={`/assign_pet/${item.animalId}`} className="btn">
-                                <img style={{width: '25px'}} src="/images/remove.png" alt="delete" />
+                            <a className="btn" onClick={()=>deleteAnimal(item.animalId)}>
+                                <img style={{width: '25px'}} src="/images/delete-forever.png" alt="delete" />
                                 <p className="text-muted">Delete</p>
-                            </Link>
+                            </a>
                         </td>
                     </tr>
                 </tbody>
@@ -179,9 +188,9 @@ export const ListAnimals = () => {
                                         <div className="dropdown-content">
                                             <p>Welcome Admin!</p>
                                             <hr/>
-                                            <a className="out" href="#">
+                                            <Link to="/login_page" className="btn out" href="#">
                                                 Log Out <img style={{width: '25px'}} src="/images/exit.png" alt="out"/>
-                                            </a>
+                                            </Link>
                                         </div>
                                     </div>
 

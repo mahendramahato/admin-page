@@ -28,21 +28,11 @@ export const AssignPet = () => {
 
     const [deleteForms, setDeleteForms] = useState('')
 
-    // const [petName, setPetName] = useState('')
-    // const [animalType, setAnimalType] = useState('')
-    // const [assign_status, setAssignedToClient] = useState('')
-    // const [appointment_information, setAppointments] = useState('')
-    // const [appointment_scale, setScale] = useState('')
-
     const [aanimals, setAanimals] = useState([
-        {petName: '', animalType: '', assign_status: '', appointment_information: '', appointment_scale: ''}
+        {petName: '', animalType: '', appointment_information: '', appointment_scale: ''}
     ])
 
     const handleFormChange = (e, index)=>{
-        //console.log(e.target.value)
-
-        // const {value, checked} = e.target
-        // console.log(`${value} is ${checked}`)
         let data = [...aanimals]
         data[index][e.target.name] = e.target.value
         setAanimals(data)
@@ -100,7 +90,7 @@ export const AssignPet = () => {
 
     const addFields = () => {
         let object = {
-            petName: '', animalType: '', assign_status: '', appointment_information: '', appointment_scale: ''
+            petName: '', animalType: '',  appointment_information: '', appointment_scale: ''
         }
         setAanimals([...aanimals, object])
     }
@@ -231,9 +221,9 @@ export const AssignPet = () => {
                                         <div className="dropdown-content">
                                             <p>Welcome Admin!</p>
                                             <hr/>
-                                            <a className="out" href="#">
+                                            <Link to="/login_page" className="btn out" href="#">
                                                 Log Out <img style={{width: '25px'}} src="/images/exit.png" alt="out"/>
-                                            </a>
+                                            </Link>
                                         </div>
                                     </div>
 
@@ -485,7 +475,7 @@ export const AssignPet = () => {
                                                         </fieldset>
 
 
-                                                        <fieldset className="col-md-2">
+                                                        {/* <fieldset className="col-md-2">
                                                             <legend className="col-form-label">Assigned Status</legend>
                                                             <div className="col-sm-7">
                                                             <div className="form-check statyes">
@@ -505,10 +495,10 @@ export const AssignPet = () => {
                                                                 </label>
                                                             </div>
                                                             </div>
-                                                        </fieldset>
+                                                        </fieldset> */}
 
 
-                                                        <div className="col-md-3">
+                                                        <div className="col-md-4">
                                                             <label htmlFor="inputAppointments" className="form-label fs">Appointment Information</label>
                                                             <textarea 
                                                             row="20" 
@@ -521,7 +511,7 @@ export const AssignPet = () => {
                                                             />
                                                         </div>
 
-                                                        <fieldset className="col-md-3">
+                                                        <fieldset className="col-md-4">
                                                             <legend className="col-form-label">Appointment Severity Scale</legend>
                                                             <div className="col-sm-7">
 

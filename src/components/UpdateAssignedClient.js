@@ -13,8 +13,26 @@ export const UpdateAssignedClient = () => {
     const [aemail, setEmail] = useState('')
     const [acellPhone, setCellphone] = useState('')
     const [aanimals, setAanimals] = useState([
-        {petName: '', animalType: '', assign_status: '', appointment_information: '', appointment_scale: ''}
+        {petName: '', animalType: '', appointment_information: '', appointment_scale: ''}
     ])
+
+    const [firstName, setFirstName1] = useState('')
+    const [lastName, setLastName1] = useState('')
+    const [email, setEmail1] = useState('')
+    const [cellPhone, setCellphone1] = useState('')
+
+    const [childrenNumber, setChildrenNumber] = useState('')
+    const [childrenAge, setChildrenAge] = useState('')
+    const [existingPetInfo, setExistingPetInfo] = useState('')
+    const [alter, setPetAlter] = useState('')
+    const [program, setFosterProgram] = useState('')
+    const [animal_interest, setAnimalInterest] = useState([])
+
+    const [area, setArea] = useState('')
+    const [experience, setExperience] = useState('')
+    const [aboutyou, setAboutyou] = useState('')
+
+    const [deleteAForms, setDeleteAForms] = useState('')
 
 
     const handleFormChange = (e, index)=>{
@@ -27,24 +45,68 @@ export const UpdateAssignedClient = () => {
     const navigate = useNavigate();
     const {aaId} = useParams();
 
-    const Update = (e) => {
+    const Update = (e, index) => {
         e.preventDefault();
 
         const client = {afirstName, alastName, aemail, acellPhone, aanimals }
+
         AdminAPI.updateAForm(aaId, client).then((response) =>{
             navigate('/assigned_client_list')
         }).catch(error =>{
             console.log(error)
         })
+
+    }
+
+    const Unassign = (e) =>{
+        e.preventDefault()
+
+        const un_client = {firstName, lastName, email, cellPhone, 
+            childrenNumber, childrenAge, existingPetInfo, alter, program, animal_interest, 
+            area, experience, aboutyou}
+
+        // delete assigned client form completely
+        AdminAPI.deleteAssignClient(deleteAForms).then((response) =>{
+            console.log("deleted successfully")
+        }).catch(error =>{
+            console.log(error);
+        })
+        
+        AdminAPI.createClient(un_client).then((response) =>{
+            console.log(response.data)
+            navigate('/assigned_client_list')
+
+        }).catch(error =>{
+            console.log(error)
+        })    
     }
 
     useEffect(() => {
         AdminAPI.getAssignedClientById(aaId).then((response) =>{
+            setDeleteAForms(aaId)
             setFirstName(response.data.afirstName)
             setLastName(response.data.alastName)
             setEmail(response.data.aemail)
             setCellphone(response.data.acellPhone)
+            setAanimals(response.data.aanimals)
 
+            setFirstName1(response.data.afirstName)
+            setLastName1(response.data.alastName)
+            setEmail1(response.data.aemail)
+            setCellphone1(response.data.acellPhone)
+
+            setChildrenAge(response.data.achildrenNumber)
+            setChildrenNumber(response.data.achildrenAge)
+            setExistingPetInfo(response.data.aexistingPetInfo)
+            setPetAlter(response.data.aalter)
+            setFosterProgram(response.data.aprogram)
+            setArea(response.data.aarea)
+            setAnimalInterest(response.data.aanimal_interest)
+            setExperience(response.data.aexperience)
+            setAboutyou(response.data.aaboutyou)
+
+            //console.log(response.data)
+            
         }).catch(error => {
             console.log(error)
         })
@@ -52,17 +114,16 @@ export const UpdateAssignedClient = () => {
 
     const addFields = () => {
         let object = {
-            petName: '', animalType: '', assign_status: '', appointment_information: '', appointment_scale: ''
+            petName: '', animalType: '', appointment_information: '', appointment_scale: ''
         }
         setAanimals([...aanimals, object])
     }
 
     const removeFields = (index) => {
         let data = [...aanimals]
-        if(index != 0){
-            data.splice(index, 1)
-            setAanimals(data)
-        }     
+
+        data.splice(index, 1)
+        setAanimals(data)  
     }
     
 
@@ -180,9 +241,9 @@ export const UpdateAssignedClient = () => {
                                         <div className="dropdown-content">
                                             <p>Welcome Admin!</p>
                                             <hr/>
-                                            <a className="out" href="#">
+                                            <Link to="/login_page" className="btn out" href="#">
                                                 Log Out <img style={{width: '25px'}} src="/images/exit.png" alt="out"/>
-                                            </a>
+                                            </Link>
                                         </div>
                                     </div>
 
@@ -523,7 +584,6 @@ export const UpdateAssignedClient = () => {
                                                     <tr>
                                                     <th>Pet Name</th>
                                                     <th>Type</th>
-                                                    <th>Assigned Status</th>
                                                     <th>Appointment Information</th>
                                                     <th>Appointment Severity Scale</th>
                                                     <th>Actions</th>
@@ -535,6 +595,7 @@ export const UpdateAssignedClient = () => {
                                                             <input type="name" className="form-control" id="inputPet" name="petName"
                                                             value={frm.petName} onChange={(e)=> handleFormChange(e, index)} />
                                                         </td>
+                                                        {/* animal type */}
                                                         <td>
                                                             <fieldset className="">
                                                                 
@@ -710,27 +771,8 @@ export const UpdateAssignedClient = () => {
                                                                 </div>
                                                             </fieldset>
                                                         </td>
-                                                        <td>
-                                                            <fieldset className="">                                                                
-                                                                <div className="form-check statyes">
-                                                                    <input className="form-check-input" type="radio"
-                                                                    name="assign_status" id="gridRadios11" value={"Yes"}
-                                                                    onChange={(e)=> handleFormChange(e, index)} />
-                                                                    <label className="form-check-label" htmlFor="gridRadios1">
-                                                                    Active
-                                                                    </label>
-                                                                </div>
-                                                                <div className="form-check statno">
-                                                                    <input className="form-check-input" type="radio"
-                                                                    name="assign_status" id="gridRadios11" value={"No"}
-                                                                    onChange={(e)=> handleFormChange(e, index)} />
-                                                                    <label className="form-check-label" htmlFor="gridRadios1">
-                                                                    Inactive
-                                                                    </label>
-                                                                </div>
-                                                                
-                                                            </fieldset>
-                                                        </td>
+                                                        
+                                                        {/* appointment information  */}
                                                         <td>
                                                             <textarea 
                                                             row="20" 
@@ -742,6 +784,7 @@ export const UpdateAssignedClient = () => {
                                                             onChange={(e)=> handleFormChange(e, index)}
                                                             />
                                                         </td>
+                                                        {/* appointment scale menu */}
                                                         <td>
                                                             <fieldset className="">
                                                                 <legend className="col-form-label"></legend>
@@ -768,6 +811,7 @@ export const UpdateAssignedClient = () => {
                                                                     </div>
                                                             </fieldset>
                                                         </td>
+                                                        {/* action menu */}
                                                         <td>
                                                             <div className="additems">           
                                                                 <img style={{width: '45px', cursor: 'pointer'}} 
@@ -794,6 +838,12 @@ export const UpdateAssignedClient = () => {
                         
                         <div className="container d-flex pb-4" style={{marginTop: 20, marginBottom: 20, justifyContent: 'center'}}>
                             <button type="submit" className="btn btn-success" style={{marginRight: 10}} onClick={(e) => Update(e)} >Update</button>
+                            
+                            <button type="submit" className="btn btn-warning" 
+                                style={{marginRight: 10}} onClick={(e) => Unassign(e)} >
+                                    Unassign Pet
+                            </button>
+
                             <div>
                                 <Link className="btn btn-danger" to={`/edit_assigned_client_list`}>Cancel</Link>
                             </div>
