@@ -1,17 +1,17 @@
 import axios from "axios";
 
-const ADMIN_REST_API_URL = 'https://animal-aid-backend.herokuapp.com/clients'
-const ASSIGN_ANIMAL = 'https://animal-aid-backend.herokuapp.com/clients/assign/'
+const ADMIN_REST_API_URL = 'https://animal-aid-backend.herokuapp.com/api/clients'
+const ASSIGN_ANIMAL = 'https://animal-aid-backend.herokuapp.com/api/clients/assign/'
 
-const APPOINTMENT_SCALE_LOW = 'https://animal-aid-backend.herokuapp.com/clients/assign/low/'
-const APPOINTMENT_SCALE_MEDIUM = 'https://animal-aid-backend.herokuapp.com/clients/assign/medium/'
-const APPOINTMENT_SCALE_HIGH = 'https://animal-aid-backend.herokuapp.com/clients/assign/high/'
+const APPOINTMENT_SCALE_LOW = 'https://animal-aid-backend.herokuapp.com/api/clients/assign/low/'
+const APPOINTMENT_SCALE_MEDIUM = 'https://animal-aid-backend.herokuapp.com/api/clients/assign/medium/'
+const APPOINTMENT_SCALE_HIGH = 'https://animal-aid-backend.herokuapp.com/api/clients/assign/high/'
 
-const LOW_COUNT = 'https://animal-aid-backend.herokuapp.com/clients/alists/lcount'
+const LOW_COUNT = 'https://animal-aid-backend.herokuapp.com/api/clients/alists/lcount'
 
-const WEEKEND_FOSTER = 'https://animal-aid-backend.herokuapp.com/clients/weekend'
-const SHORT_FOSTER = 'https://animal-aid-backend.herokuapp.com/clients/short'
-const FAMILY_FOSTER = 'https://animal-aid-backend.herokuapp.com/clients/family'
+const WEEKEND_FOSTER = 'https://animal-aid-backend.herokuapp.com/api/clients/weekend'
+const SHORT_FOSTER = 'https://animal-aid-backend.herokuapp.com/api/clients/short'
+const FAMILY_FOSTER = 'https://animal-aid-backend.herokuapp.com/api/clients/family'
 
 class AdminAPI{
 

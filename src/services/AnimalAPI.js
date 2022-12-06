@@ -1,7 +1,7 @@
 
 import axios from "axios";
 
-const ANIMAL_REST_API_URL = 'https://animal-aid-backend.herokuapp.com/animals'
+const ANIMAL_REST_API_URL = 'https://animal-aid-backend.herokuapp.com/api/animals'
 
 class AnimalAPI{
 
