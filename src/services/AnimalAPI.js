@@ -1,7 +1,7 @@
 
 import axios from "axios";
 
-const ANIMAL_REST_API_URL = 'http://localhost:8080/api/animals'
+const ANIMAL_REST_API_URL = 'http://localhost:8081/api/animals'
 
 class AnimalAPI{
 

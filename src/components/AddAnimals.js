@@ -27,9 +27,12 @@ export const AddAnimals = () => {
 
         }).catch(error =>{
             console.log(error)
-        })
+        })  
+    }
 
-        
+    const handlelogout = () =>{
+        localStorage.clear()
+        navigate("/login_page")
     }
 
     return (
@@ -146,9 +149,9 @@ export const AddAnimals = () => {
                                         <div className="dropdown-content">
                                             <p>Welcome Admin!</p>
                                             <hr/>
-                                            <Link to="/login_page" className="btn out" href="#">
+                                            <button type="submit" onClick={handlelogout} className="btn out" href="#">
                                                 Log Out <img style={{width: '25px'}} src="/images/exit.png" alt="out"/>
-                                            </Link>
+                                            </button>
                                         </div>
                                     </div>
 

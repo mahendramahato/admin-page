@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import AdminAPI from '../services/AdminAPI'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import _, { filter } from 'lodash'
 import ReactPaginate from 'react-paginate'
 
@@ -9,6 +9,8 @@ export const AssignedClientList = () => {
 
     const [openNav, setOpenNav] = useState(false)
     const showSidebar = () => setOpenNav(!openNav)
+
+    const navigate = useNavigate()
 
     const [applicants, setApplicants] = useState([])
     const [filterF, setFilterF] = useState('All')  
@@ -111,6 +113,11 @@ export const AssignedClientList = () => {
 
         const changePage = ({selected}) => {
             setPageNumber(selected)
+        }
+
+        const handlelogout = () =>{
+            localStorage.clear()
+            navigate("/login_page")
         }
 
     return (
@@ -227,9 +234,9 @@ export const AssignedClientList = () => {
                                         <div className="dropdown-content">
                                             <p>Welcome Admin!</p>
                                             <hr/>
-                                            <Link to="/login_page" className="btn out" href="#">
+                                            <button type="submit" onClick={handlelogout} className="btn out">
                                                 Log Out <img style={{width: '25px'}} src="/images/exit.png" alt="out"/>
-                                            </Link>
+                                            </button>
                                         </div>
                                     </div>
 

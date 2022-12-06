@@ -1,15 +1,17 @@
 import axios from "axios";
 
-const ADMIN_REST_API_URL = 'http://localhost:8080/api/clients'
-const ASSIGN_ANIMAL = 'http://localhost:8080/api/clients/assign/'
+const ADMIN_REST_API_URL = 'http://localhost:8081/api/clients'
+const ASSIGN_ANIMAL = 'http://localhost:8081/api/clients/assign/'
 
-const APPOINTMENT_SCALE_LOW = 'http://localhost:8080/api/clients/alists/low/'
-const APPOINTMENT_SCALE_MEDIUM = 'http://localhost:8080/api/clients/alists/medium/'
-const APPOINTMENT_SCALE_HIGH = 'http://localhost:8080/api/clients/alists/high/'
+const APPOINTMENT_SCALE_LOW = 'http://localhost:8081/api/clients/assign/low/'
+const APPOINTMENT_SCALE_MEDIUM = 'http://localhost:8081/api/clients/assign/medium/'
+const APPOINTMENT_SCALE_HIGH = 'http://localhost:8081/api/clients/assign/high/'
 
-const WEEKEND_FOSTER = 'http://localhost:8080/api/clients/weekend'
-const SHORT_FOSTER = 'http://localhost:8080/api/clients/short'
-const FAMILY_FOSTER = 'http://localhost:8080/api/clients/family'
+const LOW_COUNT = 'http://localhost:8081/api/clients/alists/lcount'
+
+const WEEKEND_FOSTER = 'http://localhost:8081/api/clients/weekend'
+const SHORT_FOSTER = 'http://localhost:8081/api/clients/short'
+const FAMILY_FOSTER = 'http://localhost:8081/api/clients/family'
 
 class AdminAPI{
 
@@ -77,23 +79,6 @@ class AdminAPI{
     getAllAAnimalsByHigh(){
         return axios.get(APPOINTMENT_SCALE_HIGH)
     }
-
-    //----------------------------------------------------------------------
-    // get all list of clients with weekend foster
-    getAllClientByWeekend(){
-        return axios.get(WEEKEND_FOSTER)
-    }
-
-    // get all list of clients with short foster
-    getAllClientByShort(){
-        return axios.get(SHORT_FOSTER)
-    }
-
-    // get all list of clients with family foster
-    getAllClientByFamily(){
-        return axios.get(FAMILY_FOSTER)
-    }
-
 
 }
 

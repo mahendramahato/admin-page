@@ -1,12 +1,14 @@
 
 import {React, useState, useEffect} from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import AdminAPI from '../services/AdminAPI'
 
 export const AssignedClientInfo = () => {
 
     const [openNav, setOpenNav] = useState(false)
     const showSidebar = () => setOpenNav(!openNav)
+    
+    const navigate = useNavigate()
 
     const [client, setClient] = useState([])
     const [clientAnimals, setClientAnimals] = useState([])
@@ -26,6 +28,11 @@ export const AssignedClientInfo = () => {
     // converting array of items into comma separated strings
     const arr = client.aanimal_interest
     const str = String(arr)
+
+    const handlelogout = () =>{
+        localStorage.clear()
+        navigate("/login_page")
+    }
 
     return (
         
@@ -142,9 +149,9 @@ export const AssignedClientInfo = () => {
                                         <div className="dropdown-content">
                                             <p>Welcome Admin!</p>
                                             <hr/>
-                                            <Link to="/login_page" className="btn out" href="#">
+                                            <button type="submit" onClick={handlelogout} className="btn out">
                                                 Log Out <img style={{width: '25px'}} src="/images/exit.png" alt="out"/>
-                                            </Link>
+                                            </button>
                                         </div>
                                     </div>
 

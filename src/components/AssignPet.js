@@ -107,6 +107,12 @@ export const AssignPet = () => {
     const arr = client.animal_interest
     const str = String(arr)
 
+    const handlelogout = () =>{
+        localStorage.clear()
+        navigate("/login_page")
+    }
+
+
     return (
 
         <div className="container-fluid">
@@ -221,9 +227,9 @@ export const AssignPet = () => {
                                         <div className="dropdown-content">
                                             <p>Welcome Admin!</p>
                                             <hr/>
-                                            <Link to="/login_page" className="btn out" href="#">
+                                            <button type="submit" onClick={handlelogout} className="btn out">
                                                 Log Out <img style={{width: '25px'}} src="/images/exit.png" alt="out"/>
-                                            </Link>
+                                            </button>
                                         </div>
                                     </div>
 
@@ -300,7 +306,7 @@ export const AssignPet = () => {
                                                             </div>
                                                         </div>
 
-                                                        <fieldset className="col-md-2">
+                                                        <fieldset className="col-md-3">
                                                             <legend className="col-form-label">Type</legend>
                                                             <div className="">
                                                                 <div className="form-check">
@@ -474,7 +480,6 @@ export const AssignPet = () => {
                                                             </div>
                                                         </fieldset>
 
-
                                                         {/* <fieldset className="col-md-2">
                                                             <legend className="col-form-label">Assigned Status</legend>
                                                             <div className="col-sm-7">
@@ -497,9 +502,8 @@ export const AssignPet = () => {
                                                             </div>
                                                         </fieldset> */}
 
-
                                                         <div className="col-md-4">
-                                                            <label htmlFor="inputAppointments" className="form-label fs">Appointment Information</label>
+                                                            <label htmlFor="inputAppointments" className="form-label">Appointment Information</label>
                                                             <textarea 
                                                             row="20" 
                                                             type="textd" 
@@ -511,7 +515,7 @@ export const AssignPet = () => {
                                                             />
                                                         </div>
 
-                                                        <fieldset className="col-md-4">
+                                                        <fieldset className="col-md-3">
                                                             <legend className="col-form-label">Appointment Severity Scale</legend>
                                                             <div className="col-sm-7">
 

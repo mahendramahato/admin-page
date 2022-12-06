@@ -1,5 +1,5 @@
 import {React, useState, useEffect, useRef} from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import AdminAPI from '../services/AdminAPI'
 import ReactToPrint, { useReactToPrint } from 'react-to-print'
 
@@ -7,6 +7,7 @@ export const MoreInfo = () => {
 
     const [openNav, setOpenNav] = useState(false)
     const showSidebar = () => setOpenNav(!openNav)
+    const navigate = useNavigate()
 
     const [client, setClient] = useState([])
     const {formId} = useParams();
@@ -28,6 +29,11 @@ export const MoreInfo = () => {
     // converting array of items into comma separated strings
     const arr = client.animal_interest
     const str = String(arr)
+
+    const handlelogout = () =>{
+        localStorage.clear()
+        navigate("/login_page")
+    }
 
     return (
         
@@ -144,9 +150,9 @@ export const MoreInfo = () => {
                                         <div className="dropdown-content">
                                             <p>Welcome Admin!</p>
                                             <hr/>
-                                            <Link to="/login_page" className="btn out" href="#">
+                                            <button type="submit" onClick={handlelogout} className="btn out">
                                                 Log Out <img style={{width: '25px'}} src="/images/exit.png" alt="out"/>
-                                            </Link>
+                                            </button>
                                         </div>
                                     </div>
 

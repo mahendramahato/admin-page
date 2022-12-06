@@ -269,7 +269,7 @@ li{
     display: none;
     position: absolute;
     background-color: #f1f1f1;
-    min-width: 160px;
+    min-width: 180px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
     border-radius: 10px;
@@ -427,6 +427,9 @@ input[type=radio]:after {
 
 .count-animal1{
     padding: 15px 15px;
+    background-color: #c1f110;
+}
+.count-animal1:hover{
     background-color: #3b76ef;
 }
 
@@ -525,7 +528,7 @@ input[type=radio]:after {
 }
 
 .chart{
-    width: 350px;
+    width: 250px;
 }
 
 .filter{
@@ -574,4 +577,15 @@ input[type=radio]:after {
 }
 .nextBttn{
     text-decoration: none;
+}
+
+.fs{
+    font-size: xxx-large;
+    width: 54px;
+    height: 54px;
+    line-height: 54px;
+    border-radius: 50%;
+    color: #fff;
+    text-align: center;
+    background: red
 }

@@ -37,8 +37,12 @@ export const UpdateForm = () => {
             console.log(error)
         })
     }, [])
-    
 
+    const handlelogout = () =>{
+        localStorage.clear()
+        navigate("/login_page")
+    }
+    
     return (
 
         <div className="container-fluid">
@@ -153,9 +157,9 @@ export const UpdateForm = () => {
                                         <div className="dropdown-content">
                                             <p>Welcome Admin!</p>
                                             <hr/>
-                                            <Link to="/login_page" className="btn out" href="#">
+                                            <button type="submit" onClick={handlelogout} className="btn out">
                                                 Log Out <img style={{width: '25px'}} src="/images/exit.png" alt="out"/>
-                                            </Link>
+                                            </button>
                                         </div>
                                     </div>
 

@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import AnimalAPI from '../services/AnimalAPI';
 import React, { useState, useEffect } from 'react'
 import _ from 'lodash'
@@ -8,6 +8,7 @@ export const ListAnimals = () => {
 
     const [openNav, setOpenNav] = useState(false)
     const showSidebar = () => setOpenNav(!openNav)
+    const navigate = useNavigate()
 
     const [animals, setAnimals] = useState([])
     const [pageNumber, setPageNumber] = useState(0)
@@ -33,7 +34,12 @@ export const ListAnimals = () => {
             console.log(error);
         })
     }
-    
+
+    const handlelogout = () =>{
+        localStorage.clear()
+        navigate("/login_page")
+    }
+
     const usersPerPage = 5
     // no.of pages visited sofar
     const pagesVisited = pageNumber * usersPerPage
@@ -188,9 +194,9 @@ export const ListAnimals = () => {
                                         <div className="dropdown-content">
                                             <p>Welcome Admin!</p>
                                             <hr/>
-                                            <Link to="/login_page" className="btn out" href="#">
+                                            <button type="submit" onClick={handlelogout} className="btn out">
                                                 Log Out <img style={{width: '25px'}} src="/images/exit.png" alt="out"/>
-                                            </Link>
+                                            </button>
                                         </div>
                                     </div>
 

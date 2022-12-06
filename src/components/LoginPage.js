@@ -11,7 +11,7 @@ export const LoginPage = () => {
     const [password, setPassword] = useState('')
     const navigate = useNavigate()
 
-    const [isLogged, setIsLogged] = useState(null)
+    const [isLogged, setIsLogged] = useState(false)
 
     var u = "";
     var p = "";
@@ -35,13 +35,14 @@ export const LoginPage = () => {
                 p = usr.password;
 
                 if (u === username && p === password) {
-                    setIsLogged(true)
+                    //setIsLogged(true)
+                    localStorage.setItem("token", "true")
+                    window.location.pathname ="/dashboard"
                     navigate("/dashboard")
                 } else {
                     console.log("wrong username and password");
-                    //console.log(u, p)
+                    // console.log(u, p)
                     setError("Username or Password is incorrect. Try Again!")
-
                 }
             })
         }
@@ -51,28 +52,27 @@ export const LoginPage = () => {
     return (
         <div className="container d-flex" style={{alignItems: 'center', flexDirection: 'column'}}>
 
-            <div className="card mt-5" style={{width: '25rem'}}>
+            <div className="card mt-5 shadow" style={{width: '25rem'}}>
                 <div className="d-flex justify-content-center">
                     <img style={{width: '75%'}} src="./images/logout.png" className="card-img-top" alt="..."/>
                 </div>
                 <div className="card-body">
                     <form onSubmit={handleSubmit}>
 
-                        <div className="d-flex justify-content-center pb-2">
+                        <div className="d-flex justify-content-center pb-4">
                             <p className="h3 fw-bold mb-0 me-3">Admin Login</p>
                         </div>
 
-
                         {/* <!-- username input --> */}
-                        <div className="form-outline">
-                            <input type="text" id="form3Example3" className="form-control form-control-small"
+                        <div className="form-group">
+                            <input type="text" id="form3Example3" className="form-control"
                                 placeholder="Username" onChange={(e) => setUsername(e.target.value)} />
                             <label className="form-label" htmlFor="form3Example3"></label>
                         </div>
 
                         {/* <!-- Password input --> */}
-                        <div className="form-outline">
-                            <input type="password" id="form3Example4" className="form-control form-control-small"
+                        <div className="form-group">
+                            <input type="password" id="form3Example4" className="form-control"
                                 placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
                             <label className="form-label" htmlFor="form3Example4"></label>
                         </div>
