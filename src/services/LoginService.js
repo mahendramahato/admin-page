@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const USER_REST_API_URL = 'http://localhost:8081/user'
+const USER_REST_API_URL = 'https://animal-aid-backend.herokuapp.com/user'
 
 class UserService{
 
